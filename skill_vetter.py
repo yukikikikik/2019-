@@ -7,6 +7,8 @@ import re
 import sys
 
 
+TRACKED_BUILTINS = {"list", "filter", "map", "range", "len", "sorted", "zip", "enumerate"}
+
 # Skill definitions: each skill has a name, category, and detection function
 SKILL_DEFINITIONS = [
     # --- Fundamentals ---
@@ -136,7 +138,7 @@ SKILL_DEFINITIONS = [
         "detect": lambda code, tree: any(
             isinstance(node, ast.Call)
             and isinstance(getattr(node, "func", None), ast.Name)
-            and node.func.id in {"list", "filter", "map", "range", "len", "sorted", "zip", "enumerate"}
+            and node.func.id in TRACKED_BUILTINS
             for node in ast.walk(tree)
         ),
     },
